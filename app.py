@@ -156,7 +156,7 @@ with update:
   
 with pan:
     st.header('堅六壬')
-    cm =  jieqi.lunar_date_d(y, m, d)
+    cm =  jieqi.lunar_date_d(y, m, d).get("農曆月")
     #dict(zip(list(range(1,13)), list("正二三四五六七八九十")+["十一","十二"])).get(int(lunar_date_d(y, m, d).get("月").replace("月", "")))
     qgz = gangzhi(y, m, d, h, min)
     jq = jq(y, m, d, h, min)
