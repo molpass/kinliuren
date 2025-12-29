@@ -57,10 +57,6 @@ def day_chin(zhi, weekday):
         ydict.update(b)
     return multi_key_dict_get(ydict, zhi).get(weekday)
 
-def lunar_date_d(y, m, d):
-    day = fromSolar(y,m,d)
-    return {"月": str(day.getLunarMonth())+"月", "日":str(day.getLunarDay())}
-
 st.set_page_config(
     layout="wide",
     page_title="堅六壬 - 六壬排盘",
