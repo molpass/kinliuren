@@ -1,7 +1,7 @@
 ﻿# 🔮 堅大六壬 · Kinliuren — Python 大六壬排盤庫
 
 <p align="center">
-  <b>中國三式之首 · The Premier Art of China's Three Divination Styles</b><br>
+  <b>中國三式重中之重 · The Premier Art of China's Three Divination Styles</b><br>
   <i>大六壬 | Da Liu Ren | Six Ren Astrology</i>
 </p>
 
