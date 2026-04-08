@@ -149,9 +149,9 @@ This library is part of the **Kin Three Styles** (堅三式) series, covering al
 | 🔮 堅大六壬 | 大六壬排盤 Da Liu Ren | [kinliuren.streamlit.app](https://kinliuren.streamlit.app/) |
 | ☯️ 堅奇門 | 奇門遁甲 Qi Men Dun Jia | [kinqimen.streamlit.app](https://kinqimen.streamlit.app/) |
 | ⭐ 堅太乙 | 太乙神數 Taiyi | [kintaiyi.streamlit.app](https://kintaiyi.streamlit.app/) |
-| 🀄 堅易 | 易經 I Ching | [iching.streamlit.app](https://iching.streamlit.app/) |
-| 🏮 堅王機 | 王機 Wangji | [kinwangji.streamlit.app](https://kinwangji.streamlit.app/) |
-| 🌟 堅太玄 | 太玄 Taixuan | [kintaixuan.streamlit.app](https://kintaixuan.streamlit.app/) |
+| 🀄 堅筮 | 易經筮法 IChing | [iching.streamlit.app](https://iching.streamlit.app/) |
+| 🏮 堅皇極 | 皇極經世 Wangji | [kinwangji.streamlit.app](https://kinwangji.streamlit.app/) |
+| 🌟 堅太玄 | 太玄筮法 Taixuan | [kintaixuan.streamlit.app](https://kintaixuan.streamlit.app/) |
 | 💫 堅五兆 | 五兆 Wuzhao | [kinwuzhao.streamlit.app](https://kinwuzhao.streamlit.app/) |
 | 🎴 堅金口 | 金口訣 Jingjue | [jingjue.streamlit.app](https://jingjue.streamlit.app/) |
 | 🪙 堅分定經 | 兩頭鉗 Liangtouqian | [liangtouqian.streamlit.app](https://liangtouqian.streamlit.app/) |
