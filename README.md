@@ -152,7 +152,7 @@ This library is part of the **Kin Three Styles** (堅三式) series, covering al
 | 🀄 堅易 | 易經 I Ching | [iching.streamlit.app](https://iching.streamlit.app/) |
 | 🏮 堅王機 | 王機 Wangji | [kinwangji.streamlit.app](https://kinwangji.streamlit.app/) |
 | 🌟 堅太玄 | 太玄 Taixuan | [kintaixuan.streamlit.app](https://kintaixuan.streamlit.app/) |
-| 💫 堅五照 | 五照 Wuzhao | [kinwuzhao.streamlit.app](https://kinwuzhao.streamlit.app/) |
+| 💫 堅五兆 | 五兆 Wuzhao | [kinwuzhao.streamlit.app](https://kinwuzhao.streamlit.app/) |
 | 🎴 金口訣 | 金口訣 Jingjue | [jingjue.streamlit.app](https://jingjue.streamlit.app/) |
 | 🪙 兩頭錢 | 兩頭錢 Liangtouqian | [liangtouqian.streamlit.app](https://liangtouqian.streamlit.app/) |
 
