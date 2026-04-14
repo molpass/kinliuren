@@ -159,14 +159,14 @@ with st.sidebar:
     # Quick-select button for current time
     if st.button("📍 現在"):
         now = pdlm.now(tz='Asia/Hong_Kong')
-        st.session_state['dt_date'] = datetime.date(now.year, now.month, now.day)
-        st.session_state['dt_time'] = datetime.time(now.hour, now.minute)
+        st.session_state['dt_date'] = now.date()
+        st.session_state['dt_time'] = now.time()
         st.rerun()
 
     # Native date picker with calendar popup
     selected_date = st.date_input(
         "日期",
-        value=datetime.date(default_datetime.year, default_datetime.month, default_datetime.day),
+        value=default_datetime.date(),
         min_value=datetime.date(1900, 1, 1),
         max_value=datetime.date(2100, 12, 31),
         key='dt_date',
@@ -176,7 +176,7 @@ with st.sidebar:
     # Native time picker with hour/minute selection
     selected_time = st.time_input(
         "時間",
-        value=datetime.time(default_datetime.hour, default_datetime.minute),
+        value=default_datetime.time(),
         step=datetime.timedelta(minutes=1),
         key='dt_time',
         help="點擊選擇時間"
