@@ -17,11 +17,6 @@ jqmc = ['小寒', '大寒', '立春', '雨水', '驚蟄', '春分', '清明', '�
 tian_gan = '甲乙丙丁戊己庚辛壬癸'
 di_zhi = '子丑寅卯辰巳午未申酉戌亥'
 
-#%% 甲子平支
-def jiazi():
-    return list(map(lambda x: "{}{}".format(tian_gan[x % len(tian_gan)],di_zhi[x % len(di_zhi)]),list(range(60))))
-
-
 def multi_key_dict_get(d, k):
     for keys, v in d.items():
         if k in keys:
@@ -135,14 +130,6 @@ def jq(year, month, day, hour, minute):
             raise ValueError(f"Current datetime {current_datetime} not within any valid jieqi period")
     except Exception as e:
         raise ValueError(f"Error in jq for {year}-{month}-{day} {hour}:{minute}: {str(e)}")
-
-def ke_jiazi_d(hour):
-    t = [f"{h}:{m}0" for h in range(24) for m in range(6)]
-    minutelist = dict(zip(t, cycle(repeat_list(1, find_lunar_ke(hour)))))
-    return minutelist
-
-def repeat_list(n, thelist):
-    return [repetition for i in thelist for repetition in repeat(i,n)]
 
 
 #農曆
