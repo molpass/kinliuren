@@ -1,4 +1,4 @@
-import os, urllib, calendar, json
+import os, urllib, calendar, json, datetime
 import streamlit as st
 import pendulum as pdlm
 from contextlib import contextmanager, redirect_stdout
@@ -152,78 +152,45 @@ pan,example,guji,links,update = st.tabs([' 🧮排盤 ', ' 📜案例 ', ' 📚�
 
 with st.sidebar:
     st.header("日期與時間選擇")
-    
-    # Set default datetime to current time in Asia/Hong_Kong (HKT)
-    default_datetime = pdlm.now(tz='Asia/Hong_Kong')  # June 1, 2025, 12:49 PM HKT
-    
-    # Separate input fields for year, month, day, hour, minute
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col1:
-        y = st.number_input(
-            "年",
-            min_value=1900,
-            max_value=2100,
-            value=default_datetime.year,
-            step=1,
-            help="輸入年份 (1900-2100)"
-        )
-    with col2:
-        m = st.number_input(
-            "月",
-            min_value=1,
-            max_value=12,
-            value=default_datetime.month,
-            step=1,
-            help="輸入月份 (1-12)"
-        )
-    with col3:
-        d = st.number_input(
-            "日",
-            min_value=1,
-            max_value=31,
-            value=default_datetime.day,
-            step=1,
-            help="輸入日期 (1-31)"
-        )
-    
-    col4, col5 = st.columns(2)
-    with col4:
-        h = st.number_input(
-            "時",
-            min_value=0,
-            max_value=23,
-            value=default_datetime.hour,
-            step=1,
-            help="輸入小時 (0-23)"
-        )
-    with col5:
-        min = st.number_input(
-            "分",
-            min_value=0,
-            max_value=59,
-            value=default_datetime.minute,
-            step=1,
-            help="輸入分鐘 (0-59)"
-        )
-    
-    # Quick-select buttons for common times
-    st.subheader("快速選擇")
-    if st.button("現在"):
-        now = pdlm.now(tz='Asia/Hong_Kong')
-        y = now.year
-        m = now.month
-        d = now.day
-        h = now.hour
-        min = now.minute
 
-    
+    # Set default datetime to current time in Asia/Hong_Kong (HKT)
+    default_datetime = pdlm.now(tz='Asia/Hong_Kong')
+
+    # Quick-select button for current time
+    if st.button("📍 現在"):
+        now = pdlm.now(tz='Asia/Hong_Kong')
+        st.session_state['dt_date'] = now.date()
+        st.session_state['dt_time'] = now.time()
+        st.rerun()
+
+    # Native date picker with calendar popup
+    selected_date = st.date_input(
+        "日期",
+        value=default_datetime.date(),
+        min_value=datetime.date(1900, 1, 1),
+        max_value=datetime.date(2100, 12, 31),
+        key='dt_date',
+        help="點擊選擇日期"
+    )
+
+    # Native time picker with hour/minute selection
+    selected_time = st.time_input(
+        "時間",
+        value=default_datetime.time(),
+        step=datetime.timedelta(minutes=1),
+        key='dt_time',
+        help="點擊選擇時間"
+    )
+
+    y = selected_date.year
+    m = selected_date.month
+    d = selected_date.day
+    h = selected_time.hour
+    mi = selected_time.minute
+
     # Display selected datetime
-    try:
-        selected_datetime = pdlm.datetime(y, m, d, h, min, tz='Asia/Hong_Kong')
-        st.write(f"已選擇: {y}年{m}月{d}日 {h:02d}:{min:02d}")
-    except ValueError:
-        st.error("請輸入有效的日期和時間！")
-    
+    st.write(f"已選擇: {y}年{m}月{d}日 {h:02d}:{mi:02d}")
+
     # Timezone info
     st.caption("時區: Asia/Hong_Kong")
 
@@ -364,8 +331,8 @@ with pan:
     st.header('堅六壬')
     cm =  jieqi.lunar_date_d(y, m, d).get("農曆月")
     #dict(zip(list(range(1,13)), list("正二三四五六七八九十")+["十一","十二"])).get(int(lunar_date_d(y, m, d).get("月").replace("月", "")))
-    qgz = gangzhi(y, m, d, h, min)
-    jq = jq(y, m, d, h, min)
+    qgz = gangzhi(y, m, d, h, mi)
+    jq = jq(y, m, d, h, mi)
     liuren_month = kinliuren.Liuren(jq, cm, qgz[1], qgz[2]).result_d(0)
     liuren_day =  kinliuren.Liuren(jq, cm, qgz[2], qgz[3]).result(0)
     liuren_hour =  kinliuren.Liuren(jq, cm, qgz[3], qgz[4]).result_m(0)
@@ -380,7 +347,7 @@ with pan:
     zdict = dict(zip(zhi, range(1, 13)))
     chin_list = list('角亢氐房心尾箕斗牛女虛危室壁奎婁胃昴畢觜參井鬼柳星張翼軫')
     d_n_h = zdict[qgz[3][1]] + zdict[qgz[4][1]]
-    a = "日期︰{}年{}月{}日{}時{}分\n".format(y,m,d,h,min)
+    a = "日期︰{}年{}月{}日{}時{}分\n".format(y,m,d,h,mi)
     b = "格局︰{}\n".format(ltext.get("格局")[0])
     c = "節氣︰{}\n".format(jq)      
     d = "干支︰{}年 {}月 {}日 {}時 {}分\n".format(qgz[0], qgz[1], qgz[2], qgz[3], qgz[4])
