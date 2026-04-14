@@ -350,15 +350,15 @@ with st.sidebar:
 
 with guji:
     st.header('古籍')
-    st.markdown(get_file_content_as_string("guji.md"))
+    st.markdown(get_file_content_as_string("docs/guji.md"))
 
 with links:
     st.header('連結')
-    st.markdown(get_file_content_as_string("update.md"), unsafe_allow_html=True)
+    st.markdown(get_file_content_as_string("docs/contact.md"), unsafe_allow_html=True)
 
 with update:
     st.header('更新')
-    st.markdown(get_file_content_as_string("log.md"))
+    st.markdown(get_file_content_as_string("docs/changelog.md"))
   
 with pan:
     st.header('堅六壬')
