@@ -6,3 +6,4 @@ kinqimen>=0.0.6.4
 ephem>=4.1.6
 altair>=5.0.0
 bidict>=0.23.1
+cerebras-cloud-sdk
