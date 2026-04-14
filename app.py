@@ -1,4 +1,8 @@
-import os, urllib, calendar, json, datetime
+import os, sys, urllib, calendar, json, datetime
+
+# Add src/ to the module search path so that library modules can be imported by name.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
+
 import streamlit as st
 import pendulum as pdlm
 from contextlib import contextmanager, redirect_stdout
