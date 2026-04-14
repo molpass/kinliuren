@@ -75,9 +75,12 @@ CEREBRAS_MODEL_DESCRIPTIONS = {
     "deepseek-r1-distill-llama-70b": "DeepSeek distilled model.",
 }
 
+SYSTEM_PROMPTS_FILE = "system_prompts.json"
+AI_MIN_MAX_TOKENS = 40000
+AI_MAX_MAX_TOKENS = 200000
+
 # System Prompt Management Functions
 def load_system_prompts():
-    SYSTEM_PROMPTS_FILE = "system_prompts.json"
     DEFAULT_SYSTEM_PROMPT = (
         "你是一位大六壬大師，熟悉《大六壬大全》、《六壬粹言》、《壬學瑣記》等經典古籍及歷史案例。請根據提供的六壬排盤數據，進行以下操作：\n"
         "1. 解釋盤局的關鍵要素（四課、三傳、天將、天盤地盤等）。\n"
@@ -99,7 +102,6 @@ def load_system_prompts():
         return default_data
 
 def save_system_prompts(prompts_data):
-    SYSTEM_PROMPTS_FILE = "system_prompts.json"
     try:
         with open(SYSTEM_PROMPTS_FILE, "w") as f:
             json.dump(prompts_data, f, indent=2)
@@ -332,8 +334,8 @@ with st.sidebar:
     if st.toggle("🔧 高級設置", key="advanced_settings_toggle"):
         st.session_state.ai_max_tokens = st.slider(
             "最大生成 Tokens",
-            40000, 200000,
-            st.session_state.get("ai_max_tokens", 200000),
+            AI_MIN_MAX_TOKENS, AI_MAX_MAX_TOKENS,
+            st.session_state.get("ai_max_tokens", AI_MAX_MAX_TOKENS),
             key="ai_max_tokens_slider",
             help="控制AI回應的最大長度"
         )
@@ -414,7 +416,7 @@ with pan:
         with st.spinner("AI正在分析六壬排盤結果..."):
             cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
             if not cerebras_api_key:
-                st.error("CEREBRAS_API_KEY 未設置，請在 .streamlit/secrets.toml 或環境變量中設置。")
+                st.error("CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。")
             else:
                 try:
                     client = CerebrasClient(api_key=cerebras_api_key)
@@ -426,7 +428,7 @@ with pan:
                     api_params = {
                         "messages": messages,
                         "model": selected_model,
-                        "max_tokens": st.session_state.get("ai_max_tokens", 200000),
+                        "max_tokens": st.session_state.get("ai_max_tokens", AI_MAX_MAX_TOKENS),
                         "temperature": st.session_state.get("ai_temperature", 0.7)
                     }
                     response = client.get_chat_completion(**api_params)
