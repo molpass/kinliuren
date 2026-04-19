@@ -3,9 +3,7 @@
 堅六壬 - 大六壬排盤 Streamlit App（重構版）
 古風玄學視覺風格 · 互動式天地盤 · AI 斷事分析
 """
-import html as html_module
-import math
-import os, sys, urllib, urllib.parse, calendar, json, datetime
+import os, sys, urllib, calendar, json, datetime
 
 # 將 src/ 加入模組搜尋路徑，使 kinliuren、jieqi 等模組可直接匯入
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
@@ -88,12 +86,12 @@ WUXING_COLORS = {
 
 # 干支五行對照
 GANZHI_WUXING = {}
-for ganzhi_chars, wuxing_element in [
+for _gz, _wx in [
     ("甲寅乙卯", "木"), ("丙巳丁午", "火"), ("壬亥癸子", "水"),
     ("庚申辛酉", "金"), ("未丑戊己辰戌", "土"),
 ]:
-    for ch in ganzhi_chars:
-        GANZHI_WUXING[ch] = wuxing_element
+    for _c in _gz:
+        GANZHI_WUXING[_c] = _wx
 
 def get_wuxing_color(char):
     """根據干支字元傳回五行顏色"""
@@ -644,8 +642,7 @@ with st.sidebar:
         st.markdown("---")
         st.markdown("### 📜 歷史記錄")
         for idx, rec in enumerate(reversed(st.session_state.history[-10:])):
-            purpose_display = rec['purpose'][:12] + ('...' if len(rec['purpose']) > 12 else '')
-            if st.button(f"🕐 {rec['time']} — {purpose_display}", key=f"hist_{idx}", use_container_width=True):
+            if st.button(f"🕐 {rec['time']} — {rec['purpose'][:12]}...", key=f"hist_{idx}", use_container_width=True):
                 st.session_state['dt_date'] = datetime.date(rec['y'], rec['m'], rec['d'])
                 st.session_state['dt_time'] = datetime.time(rec['h'], rec['mi'])
                 st.rerun()
@@ -705,9 +702,7 @@ if divination_purpose:
 # ======================================================================
 share_url = f"?y={y}&m={m_val}&d={d_val}&h={h_val}&mi={mi_val}"
 if divination_purpose:
-    # 限制事由長度避免過長 URL，並以 URL-encode 處理特殊字元
-    safe_purpose = divination_purpose[:200]
-    share_url += f"&purpose={urllib.parse.quote(safe_purpose)}"
+    share_url += f"&purpose={urllib.parse.quote(divination_purpose)}"
 
 
 # ======================================================================
@@ -721,6 +716,7 @@ def generate_sky_earth_svg(earth_to_sky, earth_to_general, width=480, height=480
     r_middle = 150  # 中圈半徑
     r_inner = 100   # 內圈半徑
 
+    import math
     svg_elements = []
 
     # 背景
@@ -865,10 +861,9 @@ with tab1:
     """, unsafe_allow_html=True)
 
     if divination_purpose:
-        escaped_purpose = html_module.escape(divination_purpose)
         st.markdown(f"""
         <div class="info-badge" style="width:100%;display:block;margin-bottom:16px;">
-            <span class="label">📝 占卜事由：</span>{escaped_purpose}
+            <span class="label">📝 占卜事由：</span>{divination_purpose}
         </div>
         """, unsafe_allow_html=True)
 
