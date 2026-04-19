@@ -152,6 +152,10 @@ st.set_page_config(
     page_title="堅六壬 - 六壬排盘",
     page_icon="icon.jpg"
 )
+
+# Initialize chat history early
+if "chat_messages" not in st.session_state:
+    st.session_state.chat_messages = []
 pan,example,guji,links,update = st.tabs([' 🧮排盤 ', ' 📜案例 ', ' 📚古籍 ',' 🔗連結 ',' 🆕更新 ' ])
 
 with st.sidebar:
@@ -419,11 +423,10 @@ with pan:
 st.markdown("---")
 st.subheader("💬 AI 六壬問答")
 
-# Initialize chat history
-if "chat_messages" not in st.session_state:
-    st.session_state.chat_messages = []
+if "chart_text" not in st.session_state:
+    st.info("請先選擇日期時間以生成排盤，AI將根據排盤數據回答您的問題。")
 
-# Display chat history
+# Display chat history in scrollable container
 chat_container = st.container(height=400)
 with chat_container:
     for msg in st.session_state.chat_messages:
@@ -435,19 +438,11 @@ if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
     # Append user message to history
     st.session_state.chat_messages.append({"role": "user", "content": user_input})
 
-    # Display user message immediately
-    with chat_container:
-        with st.chat_message("user"):
-            st.markdown(user_input)
-
     # Build context-aware messages for the AI
     cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
     if not cerebras_api_key:
         err_msg = "CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。"
         st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
-        with chat_container:
-            with st.chat_message("assistant"):
-                st.markdown(err_msg)
     else:
         # Build system prompt with chart context
         chart_context = ""
@@ -477,19 +472,13 @@ if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
             }
             response = client.get_chat_completion(**api_params)
             assistant_reply = response.choices[0].message.content
-
-            # Append assistant reply to history
             st.session_state.chat_messages.append({"role": "assistant", "content": assistant_reply})
-
-            with chat_container:
-                with st.chat_message("assistant"):
-                    st.markdown(assistant_reply)
         except Exception as e:
             err_msg = f"調用AI時發生錯誤：{e}"
             st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
-            with chat_container:
-                with st.chat_message("assistant"):
-                    st.markdown(err_msg)
+
+    # Rerun to render new messages from session state
+    st.rerun()
 
 # Clear chat button
 if st.session_state.chat_messages:
