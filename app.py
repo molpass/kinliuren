@@ -474,7 +474,9 @@ qp_month = int(qp.get("m", 0))
 qp_day = int(qp.get("d", 0))
 qp_hour = int(qp.get("h", -1))
 qp_minute = int(qp.get("mi", -1))
-qp_purpose = qp.get("purpose", "")
+# 對 query param 做基本長度限制與 HTML 消毒
+_raw_purpose = qp.get("purpose", "")
+qp_purpose = _raw_purpose[:200].replace("<", "&lt;").replace(">", "&gt;") if _raw_purpose else ""
 
 # ========== 側邊欄 ==========
 
@@ -641,15 +643,20 @@ with st.sidebar:
         st.session_state.history = []
     if st.session_state.history:
         for idx, rec in enumerate(reversed(st.session_state.history[-10:])):
-            if st.button(f"🕐 {rec['time']} | {rec['purpose'][:12]}…" if len(rec.get('purpose', '')) > 12
-                         else f"🕐 {rec['time']} | {rec.get('purpose', '無事由')}",
-                         key=f"hist_{idx}"):
+            if st.button(_format_history_label(rec), key=f"hist_{idx}"):
                 st.session_state['dt_date'] = datetime.date(rec['y'], rec['m'], rec['d'])
                 st.session_state['dt_time'] = datetime.time(rec['h'], rec['mi'])
                 st.session_state['divination_purpose'] = rec.get('purpose', '')
                 st.rerun()
     else:
         st.caption("尚無歷史記錄")
+
+def _format_history_label(rec):
+    """格式化歷史記錄按鈕標籤"""
+    purpose = rec.get('purpose', '無事由')
+    if len(purpose) > 12:
+        return f"🕐 {rec['time']} | {purpose[:12]}…"
+    return f"🕐 {rec['time']} | {purpose}"
 
 # ========== 主頁面標題 ==========
 
@@ -666,7 +673,11 @@ pan, example_tab, guji, links, update = st.tabs(
     ['🧮 排盤', '📜 案例', '📚 古籍', '🔗 連結', '🆕 更新']
 )
 
-# ---------- 古籍 / 連結 / 更新（保留原始內容） ----------
+# ---------- 古籍 / 連結 / 更新 / 案例（保留原始內容） ----------
+with example_tab:
+    st.header('案例')
+    st.caption('此頁面保留作為未來案例展示使用。')
+
 with guji:
     st.header('古籍')
     st.markdown(get_file_content_as_string("docs/guji.md"))
@@ -964,34 +975,33 @@ with pan:
     # ===== AI 分析 =====
     if st.button("🔍 使用AI分析排盤結果", key="analyze_with_ai", type="primary", use_container_width=True):
         if not divination_purpose:
-            st.warning("⚠️ 請先在側邊欄填寫「占卜事由」，以便 AI 提供更精準的分析。")
-        else:
-            with st.spinner("AI正在分析六壬排盤結果…"):
-                cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
-                if not cerebras_api_key:
-                    st.error("CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。")
-                else:
-                    try:
-                        client = CerebrasClient(api_key=cerebras_api_key)
-                        liuren_prompt = format_liuren_results_for_prompt(
-                            chart_text, ltext, ltext1, ltext2, divination_purpose
-                        )
-                        messages = [
-                            {"role": "system", "content": st.session_state.system_prompt},
-                            {"role": "user", "content": liuren_prompt}
-                        ]
-                        api_params = {
-                            "messages": messages,
-                            "model": selected_model,
-                            "max_tokens": st.session_state.get("ai_max_tokens", AI_MAX_MAX_TOKENS),
-                            "temperature": st.session_state.get("ai_temperature", 0.7)
-                        }
-                        response = client.get_chat_completion(**api_params)
-                        raw_response = response.choices[0].message.content
-                        with st.expander("AI分析結果", expanded=True):
-                            st.markdown(raw_response)
-                    except Exception as e:
-                        st.error(f"調用AI時發生錯誤：{e}")
+            st.info("💡 提示：在側邊欄填寫「占卜事由」可讓 AI 提供更精準的分析。")
+        with st.spinner("AI正在分析六壬排盤結果…"):
+            cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
+            if not cerebras_api_key:
+                st.error("CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。")
+            else:
+                try:
+                    client = CerebrasClient(api_key=cerebras_api_key)
+                    liuren_prompt = format_liuren_results_for_prompt(
+                        chart_text, ltext, ltext1, ltext2, divination_purpose
+                    )
+                    messages = [
+                        {"role": "system", "content": st.session_state.system_prompt},
+                        {"role": "user", "content": liuren_prompt}
+                    ]
+                    api_params = {
+                        "messages": messages,
+                        "model": selected_model,
+                        "max_tokens": st.session_state.get("ai_max_tokens", AI_MAX_MAX_TOKENS),
+                        "temperature": st.session_state.get("ai_temperature", 0.7)
+                    }
+                    response = client.get_chat_completion(**api_params)
+                    raw_response = response.choices[0].message.content
+                    with st.expander("AI分析結果", expanded=True):
+                        st.markdown(raw_response)
+                except Exception as e:
+                    st.error(f"調用AI時發生錯誤：{e}")
 
 # ========== 底部 AI 聊天區（固定） ==========
 
