@@ -383,6 +383,12 @@ with pan:
 
     chart_text = a+b+c+d+d2+d1+e+f+g+h+i+j+k+l+m+n+o
 
+    # Store chart context in session state for use in chat
+    st.session_state.chart_text = chart_text
+    st.session_state.chart_ltext = ltext
+    st.session_state.chart_ltext1 = ltext1
+    st.session_state.chart_ltext2 = ltext2
+
     if st.button("🔍 使用AI分析排盤結果", key="analyze_with_ai"):
         with st.spinner("AI正在分析六壬排盤結果..."):
             cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
@@ -408,3 +414,85 @@ with pan:
                         st.markdown(raw_response)
                 except Exception as e:
                     st.error(f"調用AI時發生錯誤：{e}")
+
+# --- Fixed LLM Chat Section at Bottom ---
+st.markdown("---")
+st.subheader("💬 AI 六壬問答")
+
+# Initialize chat history
+if "chat_messages" not in st.session_state:
+    st.session_state.chat_messages = []
+
+# Display chat history
+chat_container = st.container(height=400)
+with chat_container:
+    for msg in st.session_state.chat_messages:
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
+
+# Chat input (fixed at bottom by Streamlit)
+if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
+    # Append user message to history
+    st.session_state.chat_messages.append({"role": "user", "content": user_input})
+
+    # Display user message immediately
+    with chat_container:
+        with st.chat_message("user"):
+            st.markdown(user_input)
+
+    # Build context-aware messages for the AI
+    cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
+    if not cerebras_api_key:
+        err_msg = "CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。"
+        st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
+        with chat_container:
+            with st.chat_message("assistant"):
+                st.markdown(err_msg)
+    else:
+        # Build system prompt with chart context
+        chart_context = ""
+        if "chart_text" in st.session_state:
+            liuren_prompt = format_liuren_results_for_prompt(
+                st.session_state.chart_text,
+                st.session_state.chart_ltext,
+                st.session_state.chart_ltext1,
+                st.session_state.chart_ltext2
+            )
+            chart_context = f"\n\n以下是當前的六壬排盤數據供參考：\n{liuren_prompt}"
+
+        system_content = st.session_state.get("system_prompt", "") + chart_context
+
+        # Build conversation messages (system + full chat history)
+        api_messages = [{"role": "system", "content": system_content}]
+        for msg in st.session_state.chat_messages:
+            api_messages.append({"role": msg["role"], "content": msg["content"]})
+
+        try:
+            client = CerebrasClient(api_key=cerebras_api_key)
+            api_params = {
+                "messages": api_messages,
+                "model": st.session_state.get("cerebras_model_selector", CEREBRAS_MODEL_OPTIONS[0]),
+                "max_tokens": st.session_state.get("ai_max_tokens", AI_MAX_MAX_TOKENS),
+                "temperature": st.session_state.get("ai_temperature", 0.7)
+            }
+            response = client.get_chat_completion(**api_params)
+            assistant_reply = response.choices[0].message.content
+
+            # Append assistant reply to history
+            st.session_state.chat_messages.append({"role": "assistant", "content": assistant_reply})
+
+            with chat_container:
+                with st.chat_message("assistant"):
+                    st.markdown(assistant_reply)
+        except Exception as e:
+            err_msg = f"調用AI時發生錯誤：{e}"
+            st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
+            with chat_container:
+                with st.chat_message("assistant"):
+                    st.markdown(err_msg)
+
+# Clear chat button
+if st.session_state.chat_messages:
+    if st.button("🗑️ 清除對話記錄", key="clear_chat"):
+        st.session_state.chat_messages = []
+        st.rerun()
