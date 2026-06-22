@@ -1,4 +1,4 @@
-# 🔮 堅大六壬 · Kinliuren — Python 大六壬(대육임) 排盤 라이브러리
+﻿# 🔮 堅大六壬 · Kinliuren — Python 大六壬排盤庫
 
 <p align="center">
   <b>中國三式重中之重 · The Premier Art of China's Three Divination Styles</b><br>
@@ -22,8 +22,6 @@
   </a>
 </p>
 
-> 🇰🇷 이 저장소는 **molpass가 포크한 사본**입니다. 원문(中文·English)은 [README.en.md](./README.en.md)를 참고하세요.
-
 ---
 
 <p align="center">
@@ -32,13 +30,13 @@
 
 ---
 
-## 📖 도입 · Introduction
+## 📖 導讀 · Introduction
 
-**대육임**(大六壬, Da Liu Ren)은 육임신과(六壬神課)라고도 하며, 중국 고대 3대 점복술 중 하나로 **기문둔갑**(奇門遁甲), **태을신수**(太乙神數)와 함께 「삼식(三式)」으로 불립니다. 대육임은 한나라, 삼국, 위진남북조 시대에 성행했으며, 문인 명사들이 이를 풍류와 여흥으로 삼아 품속에 물건을 감추고 서로 점쳐 맞히곤 했는데 이를 「사복(射覆)」이라 불렀습니다. 당송 이래 명청을 거쳐 오늘날까지 이어져 왔습니다. 육임술은 일본에 전해진 뒤 헤이안 시대에 음양사 아베노 세이메이(安倍晴明)에 의해 크게 발전하여, 현대 점술·상술의 하나가 되었습니다.
+**大六壬**（Da Liu Ren），又稱六壬神課，是中國古老三大占卜術之一，與**奇門遁甲**、**太乙神數**並稱「三式」。大六壬盛行於漢朝、三國、魏晉南北朝，文人名士多以此為休閒雅趣，常以懷中藏物互相占卜猜測，名曰「射覆」。唐宋以來，明清相繼，相承至今。六壬術傳至日本後，在平安時代由陰陽師安倍晴明發揚光大，成為現代算命相術之一。
 
-본 라이브러리(**堅六壬**)는 Python으로 대육임의 완전한 포국(排盤)을 구현하여, 삼전(三傳)·사과(四課)·천지반(天地盤)·신살(神煞) 및 각종 격국(格局) 판단을 망라하며, 학습자를 위한 온라인 포국 Web App도 제공합니다.
+本庫（**堅六壬**）以 Python 實現大六壬完整排盤，涵蓋三傳、四課、天地盤、神煞及各類格局判斷，並提供線上排盤 Web App，供研習者使用。
 
-> 누락이나 오류가 있다면 제게 제보해 주세요. 적시에 수정하겠습니다. 감사합니다!
+> 如有遺漏紕繆，請向本人提出報錯，定必適時修正，謝謝！
 
 ---
 
@@ -48,32 +46,32 @@
 
 ---
 
-## ✨ 기능 특징 · Features
+## ✨ 功能特色 · Features
 
-| 기능 Feature | 설명 Description |
+| 功能 Feature | 說明 Description |
 |---|---|
-| 📅 삼전 추산 Three Transmissions | 초전·중전·말전 완전 계산 Full calculation of Initial, Middle & Final Transmissions |
-| 📐 사과 배열 Four Courses | 1·2·3·4과 정밀 배열 Accurate Four-Course layout |
-| 🌀 천지반 Celestial–Earthly Disk | 십이지 천반·지반 및 십이천장 대응 12-branch sky/earth disk with 12 generals |
-| 🔮 신살 계산 Spiritual Auspices | 일마·천마·장성 등 30여 종 신살 30+ auspicious/inauspicious indicators |
-| 🗂️ 격국 판단 Pattern Recognition | 적극(賊尅)·중심(重審)·원수(元首) 등 과체 격국 Pattern identification (Thief-Clashing, Retrial, etc.) |
-| 🗓️ 절기 지원 Solar Term Support | 24절기 자동 대응 Auto-mapping to 24 solar terms |
-| 🌐 온라인 포국 Web App | Streamlit 실시간 인터랙티브 포국 Real-time interactive chart via Streamlit |
-| 📦 PyPI 패키지 PyPI Package | `pip install kinliuren` 한 줄 설치 One-line install |
+| 📅 三傳推算 Three Transmissions | 初傳、中傳、末傳完整計算 Full calculation of Initial, Middle & Final Transmissions |
+| 📐 四課排列 Four Courses | 一二三四課精準排列 Accurate Four-Course layout |
+| 🌀 天地盤 Celestial–Earthly Disk | 十二支天盤、地盤及十二天將對應 12-branch sky/earth disk with 12 generals |
+| 🔮 神煞計算 Spiritual Auspices | 日馬、天馬、將星等三十餘神煞 30+ auspicious/inauspicious indicators |
+| 🗂️ 格局判斷 Pattern Recognition | 賊尅、重審、元首等課體格局 Pattern identification (Thief-Clashing, Retrial, etc.) |
+| 🗓️ 節氣支援 Solar Term Support | 自動對應二十四節氣 Auto-mapping to 24 solar terms |
+| 🌐 線上排盤 Web App | Streamlit 即時互動排盤 Real-time interactive chart via Streamlit |
+| 📦 PyPI 套件 PyPI Package | `pip install kinliuren` 一行安裝 One-line install |
 
 ---
 
-## 🚀 설치 · Installation
+## 🚀 安裝套件 · Installation
 
 ```bash
 pip install kinliuren
 ```
 
-> Python 3.7+ 필요  ·  Requires Python 3.7+
+> 需要 Python 3.7+  ·  Requires Python 3.7+
 
 ---
 
-## ⚡ 기과(起課) 방법 · Quickstart
+## ⚡ 起課方式 · Quickstart
 
 ```python
 from kinliuren import kinliuren
@@ -86,7 +84,7 @@ print(result)
 ```
 
 <details>
-<summary>📄 출력 예시 보기 · Sample Output (click to expand)</summary>
+<summary>📄 查看輸出範例 · Sample Output (click to expand)</summary>
 
 ```python
 {
@@ -132,54 +130,57 @@ print(result)
 
 ---
 
-## 🌐 온라인 포국 · Live Demo
+## 🌐 線上排盤 · Live Demo
 
-설치 없이 실시간 인터랙티브 포국을 체험하세요.
+體驗即時互動排盤，無需安裝任何軟件。  
 Try the live interactive chart — no installation required.
 
 👉 **[https://kinliuren.streamlit.app/](https://kinliuren.streamlit.app/)**
 
 ---
 
-## 📚 삼식(三式) 관련 프로젝트 · Related Three-Style Projects
+## 📚 三式相關項目 · Related Three-Style Projects
 
-본 라이브러리는 「堅三式」 시리즈의 일부로, 중국 삼식 점복의 완전한 구현을 다룹니다.
+本庫是「堅三式」系列的一部分，涵蓋中國三式占卜的完整實現。  
 This library is part of the **Kin Three Styles** (堅三式) series, covering all three classical Chinese divination arts.
 
-| 프로젝트 Project | 설명 Description | 링크 Link |
+| 項目 Project | 說明 Description | 連結 Link |
 |---|---|---|
-| 🔮 堅大六壬 | 대육임 포국 Da Liu Ren | [kinliuren.streamlit.app](https://kinliuren.streamlit.app/) |
-| ☯️ 堅奇門 | 기문둔갑 Qi Men Dun Jia | [kinqimen.streamlit.app](https://kinqimen.streamlit.app/) |
-| ⭐ 堅太乙 | 태을신수 Taiyi | [kintaiyi.streamlit.app](https://kintaiyi.streamlit.app/) |
-| 🀄 堅筮 | 역경 서법 IChing | [iching.streamlit.app](https://iching.streamlit.app/) |
-| 🏮 堅皇極 | 황극경세 Wangji | [kinwangji.streamlit.app](https://kinwangji.streamlit.app/) |
-| 🌟 堅太玄 | 태현 서법 Taixuan | [kintaixuan.streamlit.app](https://kintaixuan.streamlit.app/) |
-| 💫 堅五兆 | 오조 Wuzhao | [kinwuzhao.streamlit.app](https://kinwuzhao.streamlit.app/) |
-| 🎴 堅金口 | 금구결 Jingjue | [jingjue.streamlit.app](https://jingjue.streamlit.app/) |
-| 🪙 堅分定經 | 양두겸 Liangtouqian | [liangtouqian.streamlit.app](https://liangtouqian.streamlit.app/) |
+| 🔮 堅大六壬 | 大六壬排盤 Da Liu Ren | [kinliuren.streamlit.app](https://kinliuren.streamlit.app/) |
+| ☯️ 堅奇門 | 奇門遁甲 Qi Men Dun Jia | [kinqimen.streamlit.app](https://kinqimen.streamlit.app/) |
+| ⭐ 堅太乙 | 太乙神數 Taiyi | [kintaiyi.streamlit.app](https://kintaiyi.streamlit.app/) |
+| 🀄 堅筮 | 易經筮法 IChing | [iching.streamlit.app](https://iching.streamlit.app/) |
+| 🏮 堅皇極 | 皇極經世 Wangji | [kinwangji.streamlit.app](https://kinwangji.streamlit.app/) |
+| 🌟 堅太玄 | 太玄筮法 Taixuan | [kintaixuan.streamlit.app](https://kintaixuan.streamlit.app/) |
+| 💫 堅五兆 | 五兆 Wuzhao | [kinwuzhao.streamlit.app](https://kinwuzhao.streamlit.app/) |
+| 🎴 堅金口 | 金口訣 Jingjue | [jingjue.streamlit.app](https://jingjue.streamlit.app/) |
+| 🪙 堅分定經 | 兩頭鉗 Liangtouqian | [liangtouqian.streamlit.app](https://liangtouqian.streamlit.app/) |
 
 ---
 
-## 🤝 연락 및 지원 · Contact & Support
+## 🤝 聯絡與支持 · Contact & Support
 
-- 💬 **Telegram 그룹**: [@haizhonggum](https://t.me/haizhonggum)
-- 📢 **Telegram 채널**: [@numerology_coding](https://t.me/numerology_coding)
-- 💰 **후원 지원**: [PayPal](https://www.paypal.me/kinyeah)
-- 📱 **위챗 공식 계정**: 探究三式
+- 💬 **Telegram 群組**: [@haizhonggum](https://t.me/haizhonggum)
+- 📢 **Telegram 頻道**: [@numerology_coding](https://t.me/numerology_coding)
+- 💰 **贊助支持**: [PayPal](https://www.paypal.me/kinyeah)
+- 📱 **微信公眾號**: 探究三式
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/kentang2017/kinliuren/refs/heads/master/pic/%E5%9C%96%E7%89%87_20260316084147.jpg" alt="微信公眾號二維碼" width="200">
 </p>
 
-> 제안이나 협업 문의가 있으시면 위챗 **gnatnek**을 추가해 주세요 (GitHub에서 추가했다고 알려주세요).
-> 또는 QQ 그룹 「堅三式軟件交流群」(그룹 번호: 770621021)에 참여하세요.
+> 如有任何建議或合作事宜，可加微信 **gnatnek**（請註明是在 GitHub 加的）  
+> 或加入 QQ 群組「堅三式軟件交流群」（群號：770621021）
 >
-> For suggestions or collaboration, add WeChat **gnatnek** (please note you found me on GitHub),
+> For suggestions or collaboration, add WeChat **gnatnek** (please note you found me on GitHub),  
 > or join the QQ group "堅三式軟件交流群" (Group ID: 770621021).
 
 ---
 
-## 📜 라이선스 · License
+## 📜 授權 · License
 
-본 프로젝트는 MIT 라이선스를 따릅니다.
+本項目採用 MIT 授權條款。  
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+
+
