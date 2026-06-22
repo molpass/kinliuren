@@ -86,20 +86,20 @@ AI_MAX_MAX_TOKENS = 200000
 # System Prompt Management Functions
 def load_system_prompts():
     DEFAULT_SYSTEM_PROMPT = (
-        "你是一位大六壬大師，熟悉《大六壬大全》、《六壬粹言》、《壬學瑣記》等經典古籍及歷史案例。請根據提供的六壬排盤數據，進行以下操作：\n"
-        "1. 解釋盤局的關鍵要素（四課、三傳、天將、天盤地盤等）。\n"
-        "2. 結合六壬經典理論，分析盤局的吉凶和潛在影響。\n"
-        "3. 根據日課、月課、時課的格局及三傳、四課，詳細評估當前運勢趨勢。\n"
-        "4. 提供實用的建議或應對策略。\n"
-        "請以清晰的結構（分段、標題）呈現，語言專業且易懂，適當引用歷史案例或經典理論。"
+        "당신은 《대육임대전(大六壬大全)》, 《육임수언(六壬粹言)》, 《임학쇄기(壬學瑣記)》 등 고전 고서와 역사 사례에 정통한 대육임 대가입니다. 제공된 육임 포국 데이터를 바탕으로 다음을 수행하세요:\n"
+        "1. 반국(盤局)의 핵심 요소(사과·삼전·천장·천반지반 등)를 설명합니다.\n"
+        "2. 육임 고전 이론에 결합하여 반국의 길흉과 잠재적 영향을 분석합니다.\n"
+        "3. 일과·월과·시과의 격국과 삼전·사과를 바탕으로 현재 운세 흐름을 상세히 평가합니다.\n"
+        "4. 실용적인 조언이나 대응 전략을 제시합니다.\n"
+        "명확한 구조(단락·제목)로 제시하고, 전문적이면서도 이해하기 쉬운 한국어로 작성하며, 역사 사례나 고전 이론을 적절히 인용하세요."
     )
     try:
         with open(SYSTEM_PROMPTS_FILE, "r") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         default_data = {
-            "prompts": [{"name": "六壬大師", "content": DEFAULT_SYSTEM_PROMPT}],
-            "selected": "六壬大師"
+            "prompts": [{"name": "육임 대가", "content": DEFAULT_SYSTEM_PROMPT}],
+            "selected": "육임 대가"
         }
         with open(SYSTEM_PROMPTS_FILE, "w") as f:
             json.dump(default_data, f, indent=2)
@@ -111,57 +111,57 @@ def save_system_prompts(prompts_data):
             json.dump(prompts_data, f, indent=2)
         return True
     except Exception as e:
-        st.error(f"錯誤儲存提示：{e}")
+        st.error(f"프롬프트 저장 중 오류: {e}")
         return False
 
 def format_liuren_results_for_prompt(chart_text, ltext, ltext1, ltext2):
     """Format Liuren calculation results into a prompt for the AI model."""
     prompt_lines = [
-        "以下是大六壬排盤的計算結果，請根據這些數據提供詳細的分析和解釋：",
+        "다음은 대육임 포국 계산 결과입니다. 이 데이터를 바탕으로 상세한 분석과 해석을 한국어로 제공해 주세요:",
         "",
         chart_text,
         "",
-        "【月課詳細數據】",
-        f"格局: {ltext.get('格局', '')}",
-        f"三傳: 初傳{''.join(ltext.get('三傳', {}).get('初傳', []))} | 中傳{''.join(ltext.get('三傳', {}).get('中傳', []))} | 末傳{''.join(ltext.get('三傳', {}).get('末傳', []))}",
-        f"四課: {ltext.get('四課', '')}",
-        f"天將: {ltext.get('地轉天將', '')}",
-        f"天盤: {ltext.get('地轉天盤', '')}",
-        f"日馬: {ltext.get('日馬', '')}",
+        "【월과(月課) 상세 데이터】",
+        f"격국(格局): {ltext.get('格局', '')}",
+        f"삼전(三傳): 초전{''.join(ltext.get('三傳', {}).get('初傳', []))} | 중전{''.join(ltext.get('三傳', {}).get('中傳', []))} | 말전{''.join(ltext.get('三傳', {}).get('末傳', []))}",
+        f"사과(四課): {ltext.get('四課', '')}",
+        f"천장(天將): {ltext.get('地轉天將', '')}",
+        f"천반(天盤): {ltext.get('地轉天盤', '')}",
+        f"일마(日馬): {ltext.get('日馬', '')}",
         "",
-        "【日課詳細數據】",
-        f"格局: {ltext1.get('格局', '')}",
-        f"三傳: 初傳{''.join(ltext1.get('三傳', {}).get('初傳', []))} | 中傳{''.join(ltext1.get('三傳', {}).get('中傳', []))} | 末傳{''.join(ltext1.get('三傳', {}).get('末傳', []))}",
-        f"四課: {ltext1.get('四課', '')}",
-        f"天將: {ltext1.get('地轉天將', '')}",
-        f"天盤: {ltext1.get('地轉天盤', '')}",
-        f"日馬: {ltext1.get('日馬', '')}",
+        "【일과(日課) 상세 데이터】",
+        f"격국(格局): {ltext1.get('格局', '')}",
+        f"삼전(三傳): 초전{''.join(ltext1.get('三傳', {}).get('初傳', []))} | 중전{''.join(ltext1.get('三傳', {}).get('中傳', []))} | 말전{''.join(ltext1.get('三傳', {}).get('末傳', []))}",
+        f"사과(四課): {ltext1.get('四課', '')}",
+        f"천장(天將): {ltext1.get('地轉天將', '')}",
+        f"천반(天盤): {ltext1.get('地轉天盤', '')}",
+        f"일마(日馬): {ltext1.get('日馬', '')}",
         "",
-        "【時課詳細數據】",
-        f"格局: {ltext2.get('格局', '')}",
-        f"三傳: 初傳{''.join(ltext2.get('三傳', {}).get('初傳', []))} | 中傳{''.join(ltext2.get('三傳', {}).get('中傳', []))} | 末傳{''.join(ltext2.get('三傳', {}).get('末傳', []))}",
-        f"四課: {ltext2.get('四課', '')}",
-        f"天將: {ltext2.get('地轉天將', '')}",
-        f"天盤: {ltext2.get('地轉天盤', '')}",
-        f"日馬: {ltext2.get('日馬', '')}",
+        "【시과(時課) 상세 데이터】",
+        f"격국(格局): {ltext2.get('格局', '')}",
+        f"삼전(三傳): 초전{''.join(ltext2.get('三傳', {}).get('初傳', []))} | 중전{''.join(ltext2.get('三傳', {}).get('中傳', []))} | 말전{''.join(ltext2.get('三傳', {}).get('末傳', []))}",
+        f"사과(四課): {ltext2.get('四課', '')}",
+        f"천장(天將): {ltext2.get('地轉天將', '')}",
+        f"천반(天盤): {ltext2.get('地轉天盤', '')}",
+        f"일마(日馬): {ltext2.get('日馬', '')}",
     ]
     return "\n".join(prompt_lines)
 
 st.set_page_config(
     layout="wide",
-    page_title="堅六壬 - 六壬排盘",
+    page_title="堅六壬 - 육임 포국",
     page_icon="icon.jpg"
 )
-pan,example,guji,links,update = st.tabs([' 🧮排盤 ', ' 📜案例 ', ' 📚古籍 ',' 🔗連結 ',' 🆕更新 ' ])
+pan,example,guji,links,update = st.tabs([' 🧮 포국 ', ' 📜 사례 ', ' 📚 고서 ',' 🔗 링크 ',' 🆕 업데이트 ' ])
 
 with st.sidebar:
-    st.header("日期與時間選擇")
+    st.header("날짜와 시간 선택")
 
     # Set default datetime to current time in Asia/Hong_Kong (HKT)
     default_datetime = pdlm.now(tz='Asia/Hong_Kong')
 
     # Quick-select button for current time
-    if st.button("📍 現在"):
+    if st.button("📍 현재"):
         now = pdlm.now(tz='Asia/Hong_Kong')
         st.session_state['dt_date'] = now.date()
         st.session_state['dt_time'] = now.time()
@@ -169,21 +169,21 @@ with st.sidebar:
 
     # Native date picker with calendar popup
     selected_date = st.date_input(
-        "日期",
+        "날짜",
         value=default_datetime.date(),
         min_value=datetime.date(1900, 1, 1),
         max_value=datetime.date(2100, 12, 31),
         key='dt_date',
-        help="點擊選擇日期"
+        help="클릭하여 날짜 선택"
     )
 
     # Native time picker with hour/minute selection
     selected_time = st.time_input(
-        "時間",
+        "시간",
         value=default_datetime.time(),
         step=datetime.timedelta(minutes=1),
         key='dt_time',
-        help="點擊選擇時間"
+        help="클릭하여 시간 선택"
     )
 
     y = selected_date.year
@@ -193,16 +193,16 @@ with st.sidebar:
     mi = selected_time.minute
 
     # Display selected datetime
-    st.write(f"已選擇: {y}年{m}月{d}日 {h:02d}:{mi:02d}")
+    st.write(f"선택됨: {y}년 {m}월 {d}일 {h:02d}:{mi:02d}")
 
     # Timezone info
-    st.caption("時區: Asia/Hong_Kong")
+    st.caption("시간대: Asia/Hong_Kong")
 
     st.markdown("---")
-    st.header("AI設置")
+    st.header("AI 설정")
 
     selected_model = st.selectbox(
-        "AI 模型",
+        "AI 모델",
         options=CEREBRAS_MODEL_OPTIONS,
         index=0,
         key="cerebras_model_selector",
@@ -220,11 +220,11 @@ with st.sidebar:
             selected_index = prompt_names.index(selected_prompt)
 
         selected_name = st.selectbox(
-            "選擇系統提示",
+            "시스템 프롬프트 선택",
             options=prompt_names,
             index=selected_index,
             key="system_prompt_selector",
-            help="選擇用於AI模型的系統提示，指導其分析六壬排盤結果"
+            help="AI 모델에 사용할 시스템 프롬프트를 선택합니다. 육임 포국 결과 분석을 지도합니다"
         )
 
         system_prompts_data["selected"] = selected_name
@@ -243,10 +243,10 @@ with st.sidebar:
         st.session_state.last_selected_prompt = selected_name
 
         new_content = st.text_area(
-            "編輯系統提示",
+            "시스템 프롬프트 편집",
             value=st.session_state.system_prompt,
             height=150,
-            placeholder="範例：你是一位大六壬專家，根據排盤數據提供詳細分析...",
+            placeholder="예: 당신은 대육임 전문가입니다. 포국 데이터를 바탕으로 상세한 분석을 한국어로 제공하세요...",
             key="system_prompt_editor"
         )
 
@@ -254,23 +254,23 @@ with st.sidebar:
 
         col_u, col_d = st.columns(2)
         with col_u:
-            if st.button("💾 更新提示", key="update_prompt_button"):
+            if st.button("💾 프롬프트 업데이트", key="update_prompt_button"):
                 for prompt in prompts_list:
                     if prompt["name"] == selected_name:
                         prompt["content"] = new_content
                         break
                 if save_system_prompts(system_prompts_data):
-                    st.toast(f"✅ 已更新系統提示 '{selected_name}'！")
+                    st.toast(f"✅ 시스템 프롬프트 '{selected_name}'을(를) 업데이트했습니다!")
 
         with col_d:
-            if st.button("❌ 刪除提示", key="delete_prompt_button",
+            if st.button("❌ 프롬프트 삭제", key="delete_prompt_button",
                         disabled=len(prompts_list) <= 1):
                 prompts_list = [p for p in prompts_list if p["name"] != selected_name]
                 system_prompts_data["prompts"] = prompts_list
                 if selected_name == selected_prompt and prompts_list:
                     system_prompts_data["selected"] = prompts_list[0]["name"]
                 if save_system_prompts(system_prompts_data):
-                    st.toast(f"✅ 已刪除系統提示 '{selected_name}'！")
+                    st.toast(f"✅ 시스템 프롬프트 '{selected_name}'을(를) 삭제했습니다!")
                     st.rerun()
 
     if "form_key_suffix" not in st.session_state:
@@ -279,18 +279,18 @@ with st.sidebar:
     name_key = f"new_prompt_name_{st.session_state.form_key_suffix}"
     content_key = f"new_prompt_content_{st.session_state.form_key_suffix}"
 
-    with st.expander("➕ 新增提示", expanded=False):
-        new_prompt_name = st.text_input("新提示名稱", key=name_key)
+    with st.expander("➕ 프롬프트 추가", expanded=False):
+        new_prompt_name = st.text_input("새 프롬프트 이름", key=name_key)
         new_prompt_content = st.text_area(
-            "新提示內容",
+            "새 프롬프트 내용",
             height=100,
-            placeholder="輸入AI分析指令...",
+            placeholder="AI 분석 지시문을 입력하세요...",
             key=content_key
         )
-        if st.button("➕ 新增提示", key="add_prompt_button",
+        if st.button("➕ 프롬프트 추가", key="add_prompt_button",
                     disabled=not new_prompt_name or not new_prompt_content):
             if new_prompt_name in prompt_names:
-                st.error(f"提示名稱 '{new_prompt_name}' 已存在。")
+                st.error(f"프롬프트 이름 '{new_prompt_name}'이(가) 이미 존재합니다.")
             else:
                 prompts_list.append({
                     "name": new_prompt_name,
@@ -299,40 +299,40 @@ with st.sidebar:
                 system_prompts_data["prompts"] = prompts_list
                 if save_system_prompts(system_prompts_data):
                     st.session_state.form_key_suffix += 1
-                    st.toast(f"✅ 已新增系統提示 '{new_prompt_name}'！")
+                    st.toast(f"✅ 시스템 프롬프트 '{new_prompt_name}'을(를) 추가했습니다!")
                     st.rerun()
 
-    if st.toggle("🔧 高級設置", key="advanced_settings_toggle"):
+    if st.toggle("🔧 고급 설정", key="advanced_settings_toggle"):
         st.session_state.ai_max_tokens = st.slider(
-            "最大生成 Tokens",
+            "최대 생성 Tokens",
             AI_MIN_MAX_TOKENS, AI_MAX_MAX_TOKENS,
             st.session_state.get("ai_max_tokens", AI_MAX_MAX_TOKENS),
             key="ai_max_tokens_slider",
-            help="控制AI回應的最大長度"
+            help="AI 응답의 최대 길이를 조절합니다"
         )
         st.session_state.ai_temperature = st.slider(
-            "溫度 (專注 vs. 創意)",
+            "온도 (정확 vs. 창의)",
             0.0, 1.5,
             st.session_state.get("ai_temperature", 0.7),
             step=0.05,
             key="ai_temperature_slider",
-            help="較低值 (如 0.2) 更確定性；較高值 (如 0.8) 更隨機"
+            help="낮은 값(예: 0.2)은 더 확정적이고, 높은 값(예: 0.8)은 더 무작위적입니다"
         )
 
 with guji:
-    st.header('古籍')
+    st.header('고서')
     st.markdown(get_file_content_as_string("docs/guji.md"))
 
 with links:
-    st.header('連結')
+    st.header('링크')
     st.markdown(get_file_content_as_string("docs/contact.md"), unsafe_allow_html=True)
 
 with update:
-    st.header('更新')
+    st.header('업데이트')
     st.markdown(get_file_content_as_string("docs/changelog.md"))
-  
+
 with pan:
-    st.header('堅六壬')
+    st.header('堅六壬 · 육임 포국')
     cm =  jieqi.lunar_date_d(y, m, d).get("農曆月")
     #dict(zip(list(range(1,13)), list("正二三四五六七八九十")+["十一","十二"])).get(int(lunar_date_d(y, m, d).get("月").replace("月", "")))
     qgz = gangzhi(y, m, d, h, mi)
@@ -378,7 +378,7 @@ with pan:
     output2 = st.empty()
     with st_capture(output2.code):
         print(a+b+c+d+d2+d1+e+f+g+h+i+j+k+l+m+n+o)
-    expander = st.expander("原始碼")
+    expander = st.expander("원본 데이터")
     expander.write(str(ltext))
 
     chart_text = a+b+c+d+d2+d1+e+f+g+h+i+j+k+l+m+n+o
@@ -389,11 +389,11 @@ with pan:
     st.session_state.chart_ltext1 = ltext1
     st.session_state.chart_ltext2 = ltext2
 
-    if st.button("🔍 使用AI分析排盤結果", key="analyze_with_ai"):
-        with st.spinner("AI正在分析六壬排盤結果..."):
+    if st.button("🔍 AI로 포국 결과 분석", key="analyze_with_ai"):
+        with st.spinner("AI가 육임 포국 결과를 분석하는 중..."):
             cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
             if not cerebras_api_key:
-                st.error("CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。")
+                st.error("CEREBRAS_API_KEY가 설정되지 않았습니다. .streamlit/secrets.toml에 설정하거나 환경 변수 CEREBRAS_API_KEY를 설정해 주세요.")
             else:
                 try:
                     client = CerebrasClient(api_key=cerebras_api_key)
@@ -410,14 +410,14 @@ with pan:
                     }
                     response = client.get_chat_completion(**api_params)
                     raw_response = response.choices[0].message.content
-                    with st.expander("AI分析結果", expanded=True):
+                    with st.expander("AI 분석 결과", expanded=True):
                         st.markdown(raw_response)
                 except Exception as e:
-                    st.error(f"調用AI時發生錯誤：{e}")
+                    st.error(f"AI 호출 중 오류가 발생했습니다: {e}")
 
 # --- Fixed LLM Chat Section at Bottom ---
 st.markdown("---")
-st.subheader("💬 AI 六壬問答")
+st.subheader("💬 AI 육임 문답")
 
 # Initialize chat history
 if "chat_messages" not in st.session_state:
@@ -431,7 +431,7 @@ with chat_container:
             st.markdown(msg["content"])
 
 # Chat input (fixed at bottom by Streamlit)
-if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
+if user_input := st.chat_input("육임 질문을 입력하세요...", key="chat_input"):
     # Append user message to history
     st.session_state.chat_messages.append({"role": "user", "content": user_input})
 
@@ -443,7 +443,7 @@ if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
     # Build context-aware messages for the AI
     cerebras_api_key = st.secrets.get("CEREBRAS_API_KEY") or os.getenv("CEREBRAS_API_KEY")
     if not cerebras_api_key:
-        err_msg = "CEREBRAS_API_KEY 未設置，請先在 .streamlit/secrets.toml 設置，或設置環境變量 CEREBRAS_API_KEY。"
+        err_msg = "CEREBRAS_API_KEY가 설정되지 않았습니다. .streamlit/secrets.toml에 설정하거나 환경 변수 CEREBRAS_API_KEY를 설정해 주세요."
         st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
         with chat_container:
             with st.chat_message("assistant"):
@@ -458,7 +458,7 @@ if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
                 st.session_state.chart_ltext1,
                 st.session_state.chart_ltext2
             )
-            chart_context = f"\n\n以下是當前的六壬排盤數據供參考：\n{liuren_prompt}"
+            chart_context = f"\n\n다음은 현재 육임 포국 데이터입니다(참고용):\n{liuren_prompt}"
 
         system_content = st.session_state.get("system_prompt", "") + chart_context
 
@@ -485,7 +485,7 @@ if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
                 with st.chat_message("assistant"):
                     st.markdown(assistant_reply)
         except Exception as e:
-            err_msg = f"調用AI時發生錯誤：{e}"
+            err_msg = f"AI 호출 중 오류가 발생했습니다: {e}"
             st.session_state.chat_messages.append({"role": "assistant", "content": err_msg})
             with chat_container:
                 with st.chat_message("assistant"):
@@ -493,6 +493,6 @@ if user_input := st.chat_input("輸入您的六壬問題...", key="chat_input"):
 
 # Clear chat button
 if st.session_state.chat_messages:
-    if st.button("🗑️ 清除對話記錄", key="clear_chat"):
+    if st.button("🗑️ 대화 기록 지우기", key="clear_chat"):
         st.session_state.chat_messages = []
         st.rerun()

@@ -11,9 +11,6 @@
   <a href="https://pypi.org/project/kinliuren/"><img src="https://img.shields.io/pypi/dm/kinliuren" alt="Monthly Downloads"></a>
   <a href="https://github.com/kentang2017/kinliuren/stargazers"><img src="https://img.shields.io/github/stars/kentang2017/kinliuren?style=flat" alt="GitHub Stars"></a>
   <a href="https://github.com/kentang2017/kinliuren/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kentang2017/kinliuren" alt="License"></a>
-  <a href="https://t.me/haizhonggum"><img src="https://img.shields.io/badge/chat-Telegram-blue?logo=telegram" alt="Telegram"></a>
-  <a href="https://t.me/numerology_coding"><img src="https://img.shields.io/badge/channel-Telegram-red?logo=telegram" alt="Telegram Channel"></a>
-  <a href="https://www.paypal.me/kinyeah"><img src="https://img.shields.io/badge/Donate-PayPal-green.svg?logo=paypal" alt="Donate"></a>
 </p>
 
 <p align="center">
@@ -141,45 +138,6 @@ Try the live interactive chart — no installation required.
 
 ---
 
-## 📚 삼식(三式) 관련 프로젝트 · Related Three-Style Projects
-
-본 라이브러리는 「堅三式」 시리즈의 일부로, 중국 삼식 점복의 완전한 구현을 다룹니다.
-This library is part of the **Kin Three Styles** (堅三式) series, covering all three classical Chinese divination arts.
-
-| 프로젝트 Project | 설명 Description | 링크 Link |
-|---|---|---|
-| 🔮 堅大六壬 | 대육임 포국 Da Liu Ren | [kinliuren.streamlit.app](https://kinliuren.streamlit.app/) |
-| ☯️ 堅奇門 | 기문둔갑 Qi Men Dun Jia | [kinqimen.streamlit.app](https://kinqimen.streamlit.app/) |
-| ⭐ 堅太乙 | 태을신수 Taiyi | [kintaiyi.streamlit.app](https://kintaiyi.streamlit.app/) |
-| 🀄 堅筮 | 역경 서법 IChing | [iching.streamlit.app](https://iching.streamlit.app/) |
-| 🏮 堅皇極 | 황극경세 Wangji | [kinwangji.streamlit.app](https://kinwangji.streamlit.app/) |
-| 🌟 堅太玄 | 태현 서법 Taixuan | [kintaixuan.streamlit.app](https://kintaixuan.streamlit.app/) |
-| 💫 堅五兆 | 오조 Wuzhao | [kinwuzhao.streamlit.app](https://kinwuzhao.streamlit.app/) |
-| 🎴 堅金口 | 금구결 Jingjue | [jingjue.streamlit.app](https://jingjue.streamlit.app/) |
-| 🪙 堅分定經 | 양두겸 Liangtouqian | [liangtouqian.streamlit.app](https://liangtouqian.streamlit.app/) |
-
----
-
-## 🤝 연락 및 지원 · Contact & Support
-
-- 💬 **Telegram 그룹**: [@haizhonggum](https://t.me/haizhonggum)
-- 📢 **Telegram 채널**: [@numerology_coding](https://t.me/numerology_coding)
-- 💰 **후원 지원**: [PayPal](https://www.paypal.me/kinyeah)
-- 📱 **위챗 공식 계정**: 探究三式
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/kentang2017/kinliuren/refs/heads/master/pic/%E5%9C%96%E7%89%87_20260316084147.jpg" alt="微信公眾號二維碼" width="200">
-</p>
-
-> 제안이나 협업 문의가 있으시면 위챗 **gnatnek**을 추가해 주세요 (GitHub에서 추가했다고 알려주세요).
-> 또는 QQ 그룹 「堅三式軟件交流群」(그룹 번호: 770621021)에 참여하세요.
->
-> For suggestions or collaboration, add WeChat **gnatnek** (please note you found me on GitHub),
-> or join the QQ group "堅三式軟件交流群" (Group ID: 770621021).
-
----
-
 ## 📜 라이선스 · License
 
-본 프로젝트는 MIT 라이선스를 따릅니다.
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+[MIT License](LICENSE)
